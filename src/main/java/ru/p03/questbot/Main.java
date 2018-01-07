@@ -40,12 +40,14 @@ public class Main {
 
         Runnable r = () -> {
             Bot bot = null;
-            HttpHost proxy = AppEnv.getContext().getProxyIfAbsetnt();
+            HttpHost proxy = AppEnv.getContext().getProxy();
             if (proxy == null) {
                 bot = new Bot();
             } else {
-                DefaultBotOptions instance = ApiContext.getInstance(DefaultBotOptions.class);
-                RequestConfig rc = RequestConfig.custom().setProxy(proxy).build();
+                DefaultBotOptions instance = ApiContext
+                        .getInstance(DefaultBotOptions.class);
+                RequestConfig rc = RequestConfig.custom()
+                        .setProxy(proxy).build();
                 instance.setRequestConfig(rc);
                 bot = new Bot(instance);
             }
@@ -54,7 +56,8 @@ public class Main {
                 botsApi.registerBot(bot);
                 AppEnv.getContext().getMenuManager().setBot(bot);
             } catch (TelegramApiRequestException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Main.class.getName())
+                        .log(Level.SEVERE, null, ex);
             }
         };
 
@@ -65,7 +68,8 @@ public class Main {
             try {
                 Thread.sleep(80000L);
             } catch (InterruptedException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Main.class.getName())
+                        .log(Level.SEVERE, null, ex);
             }
         }
 

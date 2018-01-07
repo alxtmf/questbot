@@ -21,7 +21,7 @@ public class UpdateUtil {
     }
 
     public static Chat getChatFromUpdate(Update update) {
-        update.getCallbackQuery().getMessage().getChatId();
+        //update.getCallbackQuery().getMessage().getChatId();
         return update.getMessage() != null ? update.getMessage().getChat()
                 : update.getCallbackQuery().getMessage().getChat();
     }

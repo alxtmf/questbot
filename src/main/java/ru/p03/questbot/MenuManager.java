@@ -9,9 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -23,7 +21,6 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
-import ru.p03.questbot.Bot;
 import ru.p03.questbot.bot.state.StateHolder;
 import ru.p03.questbot.bot.document.spi.DocumentMarshalerAggregator;
 import ru.p03.questbot.bot.schema.Action;
@@ -50,21 +47,20 @@ public class MenuManager {
     public static final String smiling_face_with_heart_eyes = new String(Character.toChars(0x1F60D));
     public static final String winking_face_with_tongue = new String(Character.toChars(0x1F61C));
     public static final String winking_face = new String(Character.toChars(0x1F609));
+    public static final String bouquet = new String(Character.toChars(0x1F490));
+    public static final String party_popper = new String(Character.toChars(0x1F389));
 
     private final DocumentMarshalerAggregator marshalFactory;
-    private final StateHolder stateHolder;
     private final QuestStateHolder questStateHolder;
     private final ClassifierRepositoryImpl classifierRepository;
 
     private Bot bot;
 
-    private final ExecutorService sendEmployeeMessageExecutorService = Executors.newCachedThreadPool();
-
     public MenuManager(ClassifierRepository classifierRepository,
             DocumentMarshalerAggregator marshalFactory, StateHolder stateHolder,
             QuestStateHolder questStateHolder) {
         this.marshalFactory = marshalFactory;
-        this.stateHolder = stateHolder;
+        //this.stateHolder = stateHolder;
         this.classifierRepository = (ClassifierRepositoryImpl) classifierRepository;
         this.questStateHolder = questStateHolder;
     }
@@ -75,8 +71,6 @@ public class MenuManager {
 
     private void initQuests(Update update) {
         List<ClsQuest> q = classifierRepository.find(ClsQuest.class, false);
-//        Set s = new HashSet(q);
-//        List<ClsQuest> quests = new ArrayList<>(s);
         Collections.shuffle(q);
         questStateHolder.put(update, new QuestEnumeration(q));
     }
@@ -86,10 +80,14 @@ public class MenuManager {
         String text = update.getMessage().getText();
         if ("/start".equalsIgnoreCase(text)) {
             answerMessage = new SendMessage();
-            answerMessage.setText("<b>Привет, красотка" + smiling_face_with_heart_eyes + ", ты готова поиграть в увлекательную викторину?</b>"
-                    + " Будет легко и смешно: 26 шуточных вопросов с веселыми или красивыми фоточками, имеющими отношение ко всем тем, кто знает об этой викторине."
-                    + " Если захочешь начать сначала, введи /start."
-                    + " Победителю викторины - приз!" + winking_face_with_tongue);
+            answerMessage.setText("<b>Привет, красотка!" + smiling_face_with_heart_eyes + 
+                    "\nВо-первых с днем рождения!" + bouquet + bouquet + bouquet + party_popper
+                    + " А во-вторых, ты готова поиграть в увлекательную викторину?</b>"
+//                    + " Будет легко и смешно: 26 шуточных вопросов с веселыми или красивыми фоточками, имеющими отношение ко всем тем, кто знает об этой викторине."
+//                    + " Если захочешь начать сначала, введи /start."
+//                    + " Если после нажатия на кнопочку несколько секунд ничего не происходит, не волнуйся и жди - это грузятся фоточки"
+//                    + "\nПобедителю викторины - приз!" + winking_face_with_tongue
+            );
             answerMessage.setParseMode("HTML");
             answerMessage.setChatId(update.getMessage().getChatId());
             InlineKeyboardMarkup markup = keyboard(update);
@@ -128,7 +126,7 @@ public class MenuManager {
             SendMessage answers = new SendMessage();
             answers.setParseMode("HTML");
             answers.setText("<b>Ну вот и все! Подробности на процедуре награждения</b> \n "
-                    + "Если хочешь начать сначала нажми кнопку 'Начать' или введи /start");
+                    + "Если хочешь начать заново нажми кнопку 'Начать' или введи /start");
             answers.setChatId(chatId);
             InlineKeyboardMarkup markup = keyboard(update);
             answers.setReplyMarkup(markup);
@@ -146,7 +144,7 @@ public class MenuManager {
             
         }
     }
-
+    
     public List<SendMessage> processCallbackQuery(Update update) {
         List<SendMessage> answerMessages = new ArrayList<>();
         try {

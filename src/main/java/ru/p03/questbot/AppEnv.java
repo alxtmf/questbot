@@ -175,7 +175,7 @@ public class AppEnv {
         return (String) environments.get(ROOT_PATH);
     }
 
-    public HttpHost getProxyIfAbsetnt() {
+    public HttpHost getProxy() {
         if (environments.get(PROXY_HOST) != null && environments.get(PROXY_PORT) != null
                 && environments.get(PROXY_USE) != null && "true".equalsIgnoreCase((String) environments.get(PROXY_USE))) {
             try {

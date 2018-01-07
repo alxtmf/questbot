@@ -7,7 +7,6 @@ import ru.p03.questbot.model.ClsDocType;
 
 /**
  *
- * @author Pavel.Piskun
  */
 public class DocumentMarshalerAggregator implements DocumentMarshalFactory {
 

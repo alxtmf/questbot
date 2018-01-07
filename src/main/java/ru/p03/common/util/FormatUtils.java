@@ -35,13 +35,6 @@ public class FormatUtils {
         return df.format(Integer.valueOf(num));
     }
 
-    public static String getNextRegNumber(Date date, Integer incrementalNumber) {
-//        Calendar c = Calendar.getInstance();
-//        c.setTime(date);
-//        int year = c.get(Calendar.YEAR);
-        return formatLeadingZero(incrementalNumber, NUM_LEADING_ZERO);
-    }
-
     public static String formatAsDDMMYYY(Date date) {
         String str = new SimpleDateFormat("dd.MM.yyyy").format(date);
         return str;
